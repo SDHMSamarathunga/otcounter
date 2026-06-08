@@ -4,11 +4,13 @@ const OTCounter = () => {
   const [singleOT, setSingleOT] = useState('');
   const [dualOT, setDualOT] = useState('');
   const [tripleOT, setTripleOT] = useState('');
+  const [hourlyRate, setHourlyRate] = useState('');
 
   const singleOTValue = (parseFloat(singleOT) || 0) * 1.5;
   const dualOTValue = (parseFloat(dualOT) || 0) * 2;
   const tripleOTValue = (parseFloat(tripleOT) || 0) * 3;
   const totalOT = singleOTValue + dualOTValue + tripleOTValue;
+  const totalEarnings = (parseFloat(hourlyRate) || 0) * totalOT;
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 font-sans text-slate-100 selection:bg-indigo-500/30">
@@ -144,7 +146,38 @@ const OTCounter = () => {
                 </div>
               </div>
               
-              {/* Animated highlight on total change could be added here */}
+              {/* Hourly Rate Input & Total Earnings */}
+              <div className="mt-6 pt-6 border-t border-slate-700/50">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-emerald-300 mb-3 text-center">
+                  Hourly Rate (Price per 1 hour)
+                </label>
+                <div className="relative flex items-center max-w-xs mx-auto mb-6">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <span className="text-emerald-400/70 font-bold">LKR</span>
+                  </div>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value={hourlyRate}
+                    onChange={(e) => setHourlyRate(e.target.value)}
+                    className="w-full bg-slate-950/50 border border-slate-700/50 text-slate-100 text-lg rounded-2xl pl-14 pr-4 py-3 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500/50 transition-all duration-300 placeholder:text-slate-600 outline-none text-center"
+                    placeholder="Enter price"
+                  />
+                </div>
+                
+                <div className="flex flex-col items-center justify-center bg-emerald-950/30 rounded-xl p-4 border border-emerald-500/20">
+                  <span className="text-emerald-400/80 text-xs font-bold uppercase tracking-widest mb-1">
+                    Full Price (Earnings)
+                  </span>
+                  <div className="flex items-baseline space-x-2">
+                    <span className="text-xl sm:text-2xl font-bold text-emerald-500">LKR</span>
+                    <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-emerald-500 tabular-nums tracking-tighter">
+                      {totalEarnings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           
@@ -154,6 +187,7 @@ const OTCounter = () => {
                   setSingleOT('');
                   setDualOT('');
                   setTripleOT('');
+                  setHourlyRate('');
                 }}
                 className="px-6 py-2 rounded-xl text-sm font-medium text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700 transition-colors border border-slate-700/50"
              >
